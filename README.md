@@ -1,6 +1,18 @@
 # AGENTS.md
 
-跨项目共享的 Agent 指令。
+> 让 Agent 写下的每一行代码，都服务于项目的下一年。
+
+一套面向真实项目的 Agent 工程准则。它把长期主义、架构一致性、单一真相源、TDD、真实环境验证和可回滚交付带进每一次开发，让 Agent 不只完成眼前的任务，更能主动控制复杂度、消除架构分叉并守住长期质量。
+
+## 它带来的价值
+
+- **项目越改越干净**：优先解决根因，持续删除无效代码和历史包袱，避免用补丁换取短期完成。
+- **架构始终只有一条主线**：统一结构、类型和写入口，用复用与派生维护单一真相源。
+- **交付经得起真实使用**：先测试再实现，在真实环境中验证，并保持每次变更可编译、可运行、可回滚。
+- **Agent 真正理解项目**：先阅读现有代码和文档，再设计、确认和开发，把已有能力变成新功能的地基。
+- **一套标准覆盖所有仓库**：同一个版本化规则文件可以快速引入任何项目，团队与 Agent 始终遵循一致的工程判断。
+
+完整规则见 [`AGENTS.md`](AGENTS.md)。
 
 ## 安装与更新
 
@@ -10,6 +22,10 @@
 gh release download --repo w0fv1/AGENTS.md --pattern AGENTS.md --clobber
 ```
 
-也可以直接下载 [最新版本](https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md)。
+这条命令同时用于首次安装和后续更新，会将项目根目录的 `AGENTS.md` 替换为最新正式版本。
 
-版本由[发布工作流](.github/workflows/release.yml)生成。
+也可以直接[下载最新版本](https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md)。
+
+## 发布
+
+版本由[发布工作流](.github/workflows/release.yml)自动生成，每个正式版本都可以独立下载和追溯。
