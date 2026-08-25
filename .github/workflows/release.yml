@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - AGENTS.md
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          latest="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/releases?per_page=100" --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name | select(test("^V[0-9]+$")) | ltrimstr("V") | tonumber' | sort -nr | head -n 1)"
+          latest="${latest:-0}"
+          echo "value=V$((latest + 1))" >> "$GITHUB_OUTPUT"
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.value }}
+        run: gh release create "$VERSION" AGENTS.md --target "$GITHUB_SHA" --title "$VERSION" --notes "$VERSION" --latest
