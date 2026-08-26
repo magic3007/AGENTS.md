@@ -48,6 +48,26 @@ gh release download --repo w0fv1/AGENTS.md --pattern AGENTS.md --clobber
 
 这条命令同时用于首次安装和后续更新，会将项目根目录的 `AGENTS.md` 替换为最新正式版本。
 
+不使用 GitHub CLI 时，可以直接下载覆盖。
+
+### Windows PowerShell
+
+```powershell
+Invoke-WebRequest "https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md" -OutFile "AGENTS.md"
+```
+
+### Windows CMD
+
+```batch
+curl.exe -fL "https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md" -o "AGENTS.md"
+```
+
+### macOS/Linux
+
+```shell
+curl -fL "https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md" -o AGENTS.md
+```
+
 也可以直接[下载最新版本](https://github.com/w0fv1/AGENTS.md/releases/latest/download/AGENTS.md)。
 
 ## 发布
