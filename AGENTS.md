@@ -64,13 +64,25 @@
 
 # 约定
 
-- 项目本地的 Claude Code skills 与 Codex skills 必须共享同一个目录，通过软链接建立链接，禁止各自维护一份副本：
-  - `.claude/skills` → `.agents/skills`
-  - `.codex/skills` → `.agents/skills`
-- 项目本地的 `CLAUDE.md` 软链接到 `AGENTS.md`，做到单一真相源共享：
+## 项目 skills 的单一真相源
+
+- 项目本地 skills 的唯一写入口是 `.agents/skills/`，Claude Code、Codex、omp 通过软链接共享同一份，禁止各自维护副本：
+  - `.claude/skills` → `../.agents/skills`
+  - `.codex/skills` → `../.agents/skills`
+  - `.omp/skills` → `../.agents/skills`
+- 一个 skill 就是一个目录：`.agents/skills/<name>/SKILL.md`，附带文件放同目录（`references/`、`scripts/`）。
+- frontmatter 必须写 `name` 与 `description`。omp 的 native provider 扫 `.omp/skills` 时没有 `description` 就直接跳过该 skill。
+- 禁止把 skill 写在仓库根的 `skills/` 或别的位置：那些目录不在任何 harness 的发现路径里，写进去等于死信。
+
+## harness 的发现路径
+
+- omp 从 cwd 向上逐级扫描 `.omp/skills/`、`.claude/skills/`、`.codex/skills/`、`.agents/skills/`（也接受 `.agent/skills/`），再加 `~/.omp/agent/skills` 与 `~/.omp/agent/managed-skills`。
+- omp 只认 `<root>/<name>/SKILL.md` 这一层，不递归；`<root>/group/<name>/SKILL.md` 不会被发现。
+- omp 按 realpath 去重，所以上面三条软链接指向同一批文件时只加载一次，不会产生重名冲突或重复上下文。
+- 项目级常驻规则是 `.omp/RULES.md`，项目级 subagent 定义是 `.omp/agents/`，两者都不走 `.agents/` 软链接。
+- Claude Code 读 `CLAUDE.md`，omp 原生读 `AGENTS.md`，所以项目本地 `CLAUDE.md` 软链接到 `AGENTS.md`，保持单一真相源：
   - `CLAUDE.md` → `AGENTS.md`
- 
-    
+
 # 你要参考的文档
 
 如果存在Agents.custome.md，你需要参考Agents.custome.md的文档，这是对本Agents.md的扩展
